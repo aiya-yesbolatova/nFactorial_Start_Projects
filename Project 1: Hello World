@@ -1,0 +1,13 @@
+//The purpose of the Project 1 Hello World:
+// to write the first program on Java
+//to get familiar with IntelliJ editor for writing, compiling and executing Java programs
+
+//Program HelloWorld prints "Hello, World"
+
+public class HelloWorld {
+
+    public static void main(String[] args) {
+	// write your code here
+        System.out.println("Hello, World");
+    }
+}
