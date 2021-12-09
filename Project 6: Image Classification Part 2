@@ -1,0 +1,138 @@
+//A perceptron addresses the binary classification problem, in which we seek to classify input vectors into one of two classes. 
+//By convention, we use the labels +1 (positive) and −1 (negative) to denote the two classes. 
+//For the handwritten digit application, a perceptron will be trained to predict +1 for images that correspond to a target digit; and −1 otherwise. 
+//The input vector xholds the grayscale values of each pixel in an image; the weight vector w is pre-computed by a process described in the next paragraph.
+
+public class Perceptron {
+    private double[] weights;
+
+    // Creates a perceptron with n inputs.
+    public Perceptron(int n) {
+        weights = new double[n];
+    }
+
+    // Returns the number of inputs n.
+    public int numberOfInputs() {
+        return weightshas.length;
+    }
+
+    // Returns the weighted sum of the weight vector and x.
+    public double weightedSum(double[] x) {
+        double S = 0;
+        for (int i = 0; i < weights.length; i++) {
+            S += weights[i] * x[i];
+        }
+        return S;
+    }
+
+    // Predict the label (+1 or -1) of input x.
+    public int predict(double[] x) {
+        double sum = weightedSum(x);
+        if (sum > 0) return 1;
+        else return -1;
+    }
+
+    // Trains this perceptron on the labeled (+1 or -1) input x.
+    public void train(double[] x, int label) {
+        int prediction = predict(x);
+        if (prediction == 1 && label == -1) {
+            for (int i = 0; i < weights.length; i++) {
+                weights[i] = weights[i] - x[i];
+            }
+        }
+        else if (prediction == -1 && label == 1) {
+            for (int i = 0; i < weights.length; i++) {
+                weights[i] = weights[i] + x[i];
+            }
+        }
+    }
+
+
+    // Returns a string representation of this perceptron.
+    public String toString() {
+        String res = "(";
+        for (int i = 0; i < weights.length; i++) {
+            if (i == 0) res += "" + weights[i];
+            else res += ", " + weights[i];
+        }
+        res += ")";
+        return res;
+    }
+
+    // Tests this class by directly calling all instance methods.
+    public static void main(String[] args) {
+        double[] training1 = { 5.0, -4.0, 3.0 };
+        int n = 3;
+        Perceptron perceptron = new Perceptron(n);
+        StdOut.println(perceptron);
+        perceptron.train(training1, +1);
+
+    }
+}
+
+//For a multiclass classification problem with m classes, we create an array of m perceptrons, each solving its own binary classification problem. 
+//For our handwritten digit application, each perceptron solves a binary classification problem of the form does the image correspond to the digit 6?
+
+public class MultiPerceptron {
+    private Perceptron[] p;
+
+    // Creates a multi-perceptron object with m classes and n inputs.
+    public MultiPerceptron(int m, int n) {
+        //m - p.length;
+        //n - p[0].numberOfInputs();
+        p = new Perceptron[m];
+        for (int i = 0; i < m; i++) {
+            p[i] = new Perceptron(n);
+        }
+    }
+
+    // Returns the number of classes m.
+    public int numberOfClasses() {
+        return p.length;
+    }
+
+    // Returns the number of inputs n (length of the feature vector).
+    public int numberOfInputs() {
+        return p[0].numberOfInputs();
+    }
+
+    // Returns the predicted label (between 0 and m-1) for the given input.
+    public int predictMulti(double[] x) {
+        double sum = Double.MIN_VALUE;
+        int res = -1;
+        for (int i = 0; i < p.length; i++) {
+            double w_s = p[i].weightedSum();
+            if (sum < w_s) res = i;
+
+        }
+        return res;
+    }
+
+    // Trains this multi-perceptron on the labeled (between 0 and m-1) input.
+    public void trainMulti(double[] x, int label) {
+        for (int i = 0; i < p.length; i++) {
+            if (i == label) p[i].train(x, 1);
+            else p[i].train(x, -1);
+        }
+    }
+
+    // Returns a string representation of this MultiPerceptron.
+    public String toString() {
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                return String.format(", (%d, %d, %d)", MultiPerceptron(m, n));
+            }
+        }
+    }
+
+    // Tests this class by directly calling all instance methods.
+    public static void main(String[] args) {
+        int m = 2;
+        int n = 3;
+        double[] training1 = { 5.0, -4.0, 3.0 };
+        MultiPerceptron perceptron = new MultiPerceptron(m, n);
+        StdOut.println(perceptron);
+        // perceptron.trainMulti(training1, 1);
+
+    }
+}
