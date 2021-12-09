@@ -1,0 +1,65 @@
+// Bits.java compute the number of times required to divide an integer by 2 until it 
+// is less than 1
+
+public class Bits {
+    public static void main(String[] args) {
+        int x = Integer.parseInt(args[0]);
+        int res = 0;
+        
+        if (x >= 0) {
+            while (x > 0) {
+                res += 1;
+                x = x / 2;
+            }
+            System.out.println(res);
+        }
+        else {
+            System.out.println("Illegal input");
+        }
+    }
+}
+
+//NoonSnooze.java takes a command-line argument integer and prints time in 12h type
+public class NoonSnooze {
+    public static void main(String[] args) {
+        int snooze = Integer.parseInt(args[0]);
+        int minutes = ((12 * 60) + snooze) % 1440;
+        int h = minutes / 60;
+        int m = minutes % 60;
+        boolean am = (h >= 0 && h < 12);
+        h %= 12;
+        if (h == 0)
+            h = 12;
+        if (am)
+            System.out.printf("%d:%02dAM", h, m);
+        else
+            System.out.printf("%d:%02dPM", h, m);
+    }
+}
+
+//RandomWalkers.java a simulation of random walk repeated n - times (resembles experimental
+// procedure), computes average of the trials squared distance
+public class RandomWalkers {
+    public static void main(String[] args) {
+        int steps = Integer.parseInt(args[0]);
+        int trials = Integer.parseInt(args[1]);
+        int x = 0;
+        int y = 0;
+        int totalsqdist = 0;
+
+        for (int j = 0; j < trials; j++) {
+            for (int i = 0; i < steps; i++) {
+                double rndmwalk = Math.random();
+                if (rndmwalk < 0.25) y++;
+                else if (rndmwalk < 0.5) y--;
+                else if (rndmwalk < 0.75) x--;
+                else x++;
+            }
+            int sqdist = x * x + y * y;
+            totalsqdist += sqdist;
+        }
+
+        double avrgsqdist = (1.0 * totalsqdist) / trials;
+        System.out.println("mean squared distance = " + avrgsqdist);
+    }
+}
