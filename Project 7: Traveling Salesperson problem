@@ -1,0 +1,94 @@
+public class Tour {
+
+    //parameters, instance variables
+    private Node start;
+
+    private static class Node {
+        private Point p;
+        private Node next;
+    }
+
+    // creates an empty tour
+    public Tour() {
+        start = null;
+    }
+
+    // creates the 4-point tour a->b->c->d->a (for debugging)
+    public Tour(Point a, Point b, Point c, Point d) {
+        Node first = new Node();
+        start = first;
+        first.p = a;
+
+        Node second = new Node();
+        second.p = b;
+        first.next = second;
+
+        Node third = new Node();
+        third.p = c;
+        second.next = third;
+
+        Node fourth = new Node();
+        fourth.p = d;
+        third.next = fourth;
+        fourth.next = first;
+    }
+
+    // returns the number of points in this tour
+    public int size() {
+        Node current = start;
+        int count = 0;
+        do {
+            count++;
+            current = current.next;
+        } while (current != start);
+    }
+
+    // returns the length of this tour
+    public double length() {
+        Node current = start;
+        int distance = 0;
+        do {
+            distance += current.p.distanceTo();
+            current = current.next;
+        } while (current != start);
+    }
+
+    // returns a string representation of this tour
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append()
+    }
+
+
+    // draws this tour to standard drawing
+    public void draw() {
+        if (start == null) return;
+        Node x = start;
+        do {
+            if (x.next != null) {
+                x.p.drawTo(x.next.p);
+                x = x.next;
+            }
+        } while (x != start);
+    }
+
+    // inserts p using the nearest neighbor heuristic
+    public void insertNearest(Point p) {
+        
+    }
+
+    // inserts p using the smallest increase heuristic
+    public void insertSmallest(Point p) {
+
+    }
+
+    // tests this class by calling all constructors and instance methods
+    public static void main(String[] args) {
+        Point a = new Point(1.0, 1.0);
+        Point b = new Point(1.0, 4.0);
+        Point c = new Point(4.0, 4.0);
+        Point d = new Point(4.0, 1.0);
+
+        Tour squareTour = new Tour(a, b, c, d);
+    }
+}
