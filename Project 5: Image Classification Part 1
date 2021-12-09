@@ -1,0 +1,59 @@
+//Image Classifier is a client program ImageClassifier.java that classifies images using the MultiPerceptron data type described in the previous section by:
+//Training it using the input–output pairs specified in a training data file.
+//Testing the predictions using the input–output pairs specified in a testing data file.
+//Printing a list of misclassified images and the test error rate.
+
+
+import java.awt.Color;
+
+public class ImageClassifier {
+    public static double[] extractFeatures(Picture picture) {
+        int width = picture.width();
+        int height = picture.height();
+        double[] vector = new double[width * height];
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                Color color = picture.get(i, j);
+                vector[i * height + j] = color.getRed();
+            }
+        }
+        return vector;
+    }
+
+    public static void main(String[] args) {
+        In train = new In(args[0]);
+        int mTrain = train.readInt();
+        int widthTrain = train.readInt();
+        int heightTrain = train.readInt();
+        int size = widthTrain * heightTrain;
+        MultiPerceptron multiPerceptron = new MultiPerceptron(mTrain, size);
+        while (!train.isEmpty()) {
+            String nameTrain = train.readString();
+            int label = train.readInt();
+            Picture pictureTrain = new Picture(nameTrain);
+            double[] vectorTrain = extractFeatures(pictureTrain);
+            multiPerceptron.trainMulti(vectorTrain, label);
+        }
+
+        In test = new In(args[0]);
+        int mTest = test.readInt();
+        int widthTest = test.readInt();
+        int heightTest = test.readInt();
+        int count = 0;
+        int totalNumber = 0;
+        while (!test.isEmpty()) {
+            totalNumber++;
+            String nameTest = test.readString();
+            int label = test.readInt();
+            Picture pictureTest = new Picture(nameTest);
+            double[] vectorTest = extractFeatures(pictureTest);
+            int newLabel = multiPerceptron.predictMulti(vectorTest);
+            if (newLabel != label) {
+                StdOut.println(nameTest);
+                count++;
+            }
+        }
+        double error = (1.0 * count) / totalNumber;
+        StdOut.println("test error rate = " + error);
+    }
+}
